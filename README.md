@@ -76,6 +76,34 @@ npm run email:preview # React Email dev server at localhost:3000
 
 ---
 
+## Agent Skills
+
+Nine Claude Code skills are bundled in the repo under `.agents/skills/` and symlinked from `.claude/skills/` and `skills/`. They load automatically when Claude Code is running in this project.
+
+| Skill | Source | Purpose |
+|---|---|---|
+| `vercel-react-best-practices` | vercel-labs/agent-skills | React 19 perf, SSR/RSC, re-render patterns |
+| `web-design-guidelines` | vercel-labs/agent-skills | UI/UX quality for landing pages |
+| `vercel-composition-patterns` | vercel-labs/agent-skills | Server/Client component composition |
+| `nextjs` | vercel-labs/vercel-plugin | Next.js App Router reference |
+| `prisma-database-setup` | prisma/skills | Schema, migrations, adapter patterns |
+| `tailwind-css-patterns` | giuseppe-trisciuoglio/developer-kit | Tailwind component and layout patterns |
+| `tailwindcss-advanced-layouts` | josiahsiegel/claude-plugin-marketplace | Advanced Tailwind layout techniques |
+| `typescript-best-practices` | 0xbigboss/claude-code | Strict TypeScript patterns |
+| `stripe-integration` | sickn33/antigravity-awesome-skills | Stripe checkout and webhook patterns |
+
+To add or update skills:
+
+```bash
+npx skills add <owner/repo@skill-name> -y   # add
+npx skills check                             # check for updates
+npx skills update                            # update all
+```
+
+`skills-lock.json` pins hashes — commit it alongside any skill changes.
+
+---
+
 ## Environment Variables
 
 | Variable | Required | Description |
