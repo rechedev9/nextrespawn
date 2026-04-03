@@ -202,4 +202,3 @@ Compiler is truth. Run `npm run build` to verify — not just the LSP.
 
 - **Rate limiter** (`lib/rate-limit.ts`): in-process Map, ineffective on Vercel (each invocation has isolated memory). Replace with Upstash Redis for serverless production.
 - **Blog error boundary**: `getAllPosts()` aborts the entire listing if one `.mdx` file has malformed frontmatter. Wrap per-file reads in try/catch if this becomes an issue.
-- **Session type augmentation**: `next-auth.d.ts` not yet created — `session.user.hasAccess` requires a cast in the current code. Create the file to fix this properly.
