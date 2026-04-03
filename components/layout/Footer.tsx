@@ -10,12 +10,16 @@ export function Footer(): React.ReactElement {
           &copy; {new Date().getFullYear()} {config.appName}. All rights reserved.
         </p>
         <nav className="flex items-center gap-4">
-          <Link href={config.legal.privacyUrl} className="hover:text-foreground transition-colors">
-            Privacy
-          </Link>
-          <Link href={config.legal.termsUrl} className="hover:text-foreground transition-colors">
-            Terms
-          </Link>
+          {config.legal.privacyUrl && (
+            <Link href={config.legal.privacyUrl} className="hover:text-foreground transition-colors">
+              Privacy
+            </Link>
+          )}
+          {config.legal.termsUrl && (
+            <Link href={config.legal.termsUrl} className="hover:text-foreground transition-colors">
+              Terms
+            </Link>
+          )}
           <Link href={config.social.github} className="hover:text-foreground transition-colors">
             GitHub
           </Link>

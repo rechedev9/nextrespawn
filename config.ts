@@ -82,8 +82,8 @@ export const config = {
 
   // Legal
   legal: {
-    privacyUrl: "/privacy",
-    termsUrl: "/terms",
+    privacyUrl: "",
+    termsUrl: "",
   },
 } as const;
 
