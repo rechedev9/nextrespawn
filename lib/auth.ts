@@ -3,7 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import Google from "next-auth/providers/google";
 import Resend from "next-auth/providers/resend";
 import { prisma } from "@/lib/prisma";
-import { resend, FROM_ADDRESS } from "@/lib/resend";
+import { resend, getFromAddress } from "@/lib/resend";
 import { WelcomeEmail } from "@/emails/WelcomeEmail";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
@@ -15,7 +15,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     }),
     Resend({
       apiKey: process.env.RESEND_API_KEY,
-      from: process.env.RESEND_FROM ?? "noreply@localhost",
+      from: process.env.RESEND_FROM ?? "noreply@localhost", // validated at startup by lib/env.ts
     }),
   ],
   pages: {
@@ -29,7 +29,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
       try {
         await resend.emails.send({
-          from: FROM_ADDRESS,
+          from: getFromAddress(),
           to: user.email,
           subject: "Welcome!",
           react: WelcomeEmail({ name: user.name ?? "there", appUrl }),
@@ -42,11 +42,9 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   callbacks: {
     session({ session, user }) {
-      // Expose hasAccess and id on the session so clients can gate features
       if (user) {
         session.user.id = user.id;
-        (session.user as typeof session.user & { hasAccess: boolean }).hasAccess =
-          (user as typeof user & { hasAccess: boolean }).hasAccess ?? false;
+        session.user.hasAccess = user.hasAccess ?? false;
       }
       return session;
     },

@@ -1,7 +1,9 @@
+import type React from "react";
+import type { Metadata } from "next";
 import { LoginForm } from "@/components/shared/LoginForm";
 import { config } from "@/config";
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Login",
 };
 

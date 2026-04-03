@@ -8,8 +8,15 @@ import {
 // Enable by setting PAYMENT_PROVIDER=lemonsqueezy in your environment.
 // All required env vars are documented in .env.local.example.
 
-if (process.env.LEMONSQUEEZY_API_KEY) {
-  lemonSqueezySetup({ apiKey: process.env.LEMONSQUEEZY_API_KEY });
+// Initialized lazily — setup runs once before the first checkout call
+let _initialized = false;
+
+function ensureLSSetup(): void {
+  if (_initialized) return;
+  const key = process.env.LEMONSQUEEZY_API_KEY;
+  if (!key) throw new Error("LEMONSQUEEZY_API_KEY is not set");
+  lemonSqueezySetup({ apiKey: key });
+  _initialized = true;
 }
 
 /**
@@ -24,6 +31,8 @@ export async function createLSCheckoutUrl(
   email: string,
   userId: string
 ): Promise<string> {
+  ensureLSSetup();
+
   if (!process.env.LEMONSQUEEZY_STORE_ID) {
     throw new Error("LEMONSQUEEZY_STORE_ID is not set");
   }

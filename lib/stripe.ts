@@ -37,7 +37,7 @@ export async function createCheckoutSession({
   cancelUrl,
 }: {
   userId: string;
-  email: string;
+  email: string | undefined;
   priceId: string;
   mode: "subscription" | "payment";
   successUrl: string;

@@ -1,3 +1,4 @@
+import type React from "react";
 import { config } from "@/config";
 import { CheckoutButton } from "@/components/shared/CheckoutButton";
 import { Badge } from "@/components/ui/badge";

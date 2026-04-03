@@ -1,3 +1,5 @@
+import type React from "react";
+
 interface Feature {
   readonly icon: React.ReactNode;
   readonly title: string;

@@ -1,3 +1,5 @@
+import type React from "react";
+
 // JSON-LD structured data component using React's native script-children support.
 // React 18+ allows children on <script> elements, so no dangerouslySetInnerHTML needed.
 // https://react.dev/reference/react-dom/components/script

@@ -34,8 +34,13 @@ export async function POST(request: Request): Promise<NextResponse> {
   const rawBody = await request.text();
   const signature = request.headers.get("x-signature");
 
-  if (!signature || !process.env.LEMONSQUEEZY_WEBHOOK_SECRET) {
-    return NextResponse.json({ error: "Missing signature" }, { status: 400 });
+  if (!process.env.LEMONSQUEEZY_WEBHOOK_SECRET) {
+    console.error("[lemonsqueezy/webhook] LEMONSQUEEZY_WEBHOOK_SECRET is not configured");
+    return NextResponse.json({ error: "Server misconfiguration" }, { status: 500 });
+  }
+
+  if (!signature) {
+    return NextResponse.json({ error: "Missing x-signature header" }, { status: 400 });
   }
 
   // Verify webhook signature
@@ -59,51 +64,49 @@ export async function POST(request: Request): Promise<NextResponse> {
   const userId = custom_data?.userId;
 
   if (!userId) {
-    console.warn("[lemonsqueezy/webhook] Missing custom_data.userId for event:", event_name);
+    console.error("[lemonsqueezy/webhook] Missing custom_data.userId for event:", event_name);
+    return NextResponse.json(
+      { error: "Missing custom_data.userId — cannot process event" },
+      { status: 422 }
+    );
   }
 
   try {
     switch (event_name) {
       case "order_created":
       case "subscription_created":
-        if (userId) {
-          await prisma.user.update({
-            where: { id: userId },
-            data: {
-              hasAccess: true,
-              subscriptionStatus: event_name === "order_created" ? "one_time" : "active",
-            },
-          });
-        }
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            hasAccess: true,
+            subscriptionStatus: event_name === "order_created" ? "one_time" : "active",
+          },
+        });
         break;
 
       case "subscription_updated": {
         const sub = payload.data as LsSubscription;
-        if (userId) {
-          const isActive =
-            sub.attributes.status === "active" ||
-            sub.attributes.status === "on_trial";
-          await prisma.user.update({
-            where: { id: userId },
-            data: {
-              hasAccess: isActive,
-              subscriptionStatus: sub.attributes.status,
-            },
-          });
-        }
+        const isActive =
+          sub.attributes.status === "active" ||
+          sub.attributes.status === "on_trial";
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            hasAccess: isActive,
+            subscriptionStatus: sub.attributes.status,
+          },
+        });
         break;
       }
 
       case "subscription_cancelled":
-        if (userId) {
-          await prisma.user.update({
-            where: { id: userId },
-            data: {
-              hasAccess: false,
-              subscriptionStatus: "cancelled",
-            },
-          });
-        }
+        await prisma.user.update({
+          where: { id: userId },
+          data: {
+            hasAccess: false,
+            subscriptionStatus: "cancelled",
+          },
+        });
         break;
 
       default:

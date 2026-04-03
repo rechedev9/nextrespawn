@@ -24,7 +24,8 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   try {
     event = stripe.webhooks.constructEvent(body, signature, webhookSecret);
-  } catch {
+  } catch (err) {
+    console.error("[stripe/webhook] Signature verification failed:", err);
     return NextResponse.json({ error: "Invalid webhook signature" }, { status: 400 });
   }
 
@@ -76,9 +77,8 @@ async function handleCheckoutCompleted(
   if (!userId) return;
 
   const customerId = resolveCustomerId(session.customer);
-  const priceId =
-    session.line_items?.data[0]?.price?.id ??
-    (await getFirstPriceId(session.id));
+  // line_items is never expanded in webhook payloads — always retrieve via API
+  const priceId = await getFirstPriceId(session.id);
 
   await prisma.user.update({
     where: { id: userId },
@@ -138,7 +138,7 @@ async function handlePaymentFailed(invoice: Stripe.Invoice): Promise<void> {
   });
 }
 
-// Expand line_items if not already included in the session
+// Retrieve priceId from checkout session line items via Stripe API
 async function getFirstPriceId(sessionId: string): Promise<string | null> {
   const session = await stripe.checkout.sessions.retrieve(sessionId, {
     expand: ["line_items"],

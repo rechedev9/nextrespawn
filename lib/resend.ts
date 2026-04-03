@@ -18,4 +18,11 @@ export const resend = new Proxy({} as Resend, {
   },
 });
 
-export const FROM_ADDRESS = process.env.RESEND_FROM ?? "noreply@localhost";
+// Lazy read — deferred until first use so env validation in lib/env.ts runs first
+let _fromAddress: string | null = null;
+export function getFromAddress(): string {
+  if (!_fromAddress) {
+    _fromAddress = process.env.RESEND_FROM ?? "noreply@localhost";
+  }
+  return _fromAddress;
+}

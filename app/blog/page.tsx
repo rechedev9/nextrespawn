@@ -1,10 +1,12 @@
+import type React from "react";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { getAllPosts } from "@/lib/blog";
+import { config } from "@/config";
 
 export const metadata: Metadata = {
   title: "Blog",
-  description: "Thoughts, updates, and guides from the ShipFast team.",
+  description: `Thoughts, updates, and guides from the ${config.appName} team.`,
 };
 
 export default function BlogPage(): React.ReactElement {

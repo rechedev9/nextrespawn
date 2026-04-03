@@ -1,7 +1,8 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { auth } from "@/lib/auth";
-import { resend, FROM_ADDRESS } from "@/lib/resend";
+import { resend, getFromAddress } from "@/lib/resend";
+import { rateLimit } from "@/lib/rate-limit";
 
 // Internal-only route for programmatic email sends.
 // Protected — requires an active session.
@@ -19,6 +20,11 @@ export async function POST(request: Request): Promise<NextResponse> {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  const rl = rateLimit(`email:${session.user.id}`, 10, 60_000);
+  if (!rl.success) {
+    return NextResponse.json({ error: "Too many requests" }, { status: 429 });
+  }
+
   let body: unknown;
   try {
     body = await request.json();
@@ -33,9 +39,17 @@ export async function POST(request: Request): Promise<NextResponse> {
 
   const { to, subject, html } = parsed.data;
 
+  // Restrict sends to the authenticated user's own email
+  if (to !== session.user.email) {
+    return NextResponse.json(
+      { error: "Can only send emails to your own address" },
+      { status: 403 }
+    );
+  }
+
   try {
     const { data, error } = await resend.emails.send({
-      from: FROM_ADDRESS,
+      from: getFromAddress(),
       to,
       subject,
       html,

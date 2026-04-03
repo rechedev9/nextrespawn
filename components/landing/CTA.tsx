@@ -1,3 +1,4 @@
+import type React from "react";
 import Link from "next/link";
 import { buttonVariants } from "@/lib/button-variants";
 import { config } from "@/config";
