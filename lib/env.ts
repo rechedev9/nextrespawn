@@ -20,6 +20,8 @@ const serverSchema = z.object({
   // Stripe
   STRIPE_SECRET_KEY: z.string().min(1, "STRIPE_SECRET_KEY is required"),
   STRIPE_WEBHOOK_SECRET: z.string().regex(/^whsec_/, "STRIPE_WEBHOOK_SECRET must start with whsec_"),
+  STRIPE_PRICE_STARTER: z.string().regex(/^price_/, "STRIPE_PRICE_STARTER must be a Stripe price ID (price_...)"),
+  STRIPE_PRICE_PRO: z.string().regex(/^price_/, "STRIPE_PRICE_PRO must be a Stripe price ID (price_...)"),
 
   // Node
   NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
