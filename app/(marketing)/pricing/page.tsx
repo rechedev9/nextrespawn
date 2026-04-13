@@ -5,7 +5,7 @@ import { FAQ } from "@/components/landing/FAQ";
 
 export const metadata: Metadata = {
   title: "Pricing",
-  description: "Simple, one-time pricing. No subscriptions, no surprises.",
+  description: "Simple, transparent pricing.",
 };
 
 export default function PricingPage(): React.ReactElement {
