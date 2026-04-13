@@ -5,6 +5,7 @@ import Resend from "next-auth/providers/resend";
 import { prisma } from "@/lib/prisma";
 import { resend, getFromAddress } from "@/lib/resend";
 import { WelcomeEmail } from "@/emails/WelcomeEmail";
+import { config } from "@/config";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -31,7 +32,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         await resend.emails.send({
           from: getFromAddress(),
           to: user.email,
-          subject: "Welcome!",
+          subject: `Welcome to ${config.appName}!`,
           react: WelcomeEmail({ name: user.name ?? "there", appUrl }),
         });
       } catch (err) {
