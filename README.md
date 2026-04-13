@@ -1,8 +1,6 @@
-# ShipFast
+# Next.js SaaS Starter
 
-Personal Next.js SaaS boilerplate. Clone → configure → running local dev in under 5 minutes.
-
-Not a commercial product. No marketing, no leaderboards, no affiliate systems — just a clean technical foundation for every future project.
+Clone-ready SaaS boilerplate. Configure, customize, ship.
 
 ---
 
@@ -27,15 +25,24 @@ Not a commercial product. No marketing, no leaderboards, no affiliate systems �
 
 ## Setup
 
-### 1. Clone and install
+### 1. Configure your app
+
+Edit `config.ts` — this is the single source of truth for your app and should be the first thing you change after cloning. Update at minimum:
+
+- `appName` — your product name
+- `domain` — your production domain
+- `social` — your social profile links
+
+### 2. Clone and install
 
 ```bash
 git clone <repo-url> my-app
 cd my-app
 npm install
+git remote remove origin
 ```
 
-### 2. Configure environment
+### 3. Configure environment
 
 ```bash
 cp .env.local.example .env.local
@@ -43,17 +50,13 @@ cp .env.local.example .env.local
 
 Fill in all values — see [Environment Variables](#environment-variables) below.
 
-### 3. Set up the database
+### 4. Set up the database
 
 Create a Supabase project at [supabase.com](https://supabase.com) and add your connection strings to `.env.local`, then run the initial migration:
 
 ```bash
 npx prisma migrate dev --name init
 ```
-
-### 4. Configure your app
-
-Edit `config.ts` — this is the single source of truth for app name, pricing tiers, FAQ, social links, and branding colors.
 
 ### 5. Run
 
@@ -136,7 +139,7 @@ stripe listen --forward-to localhost:3000/api/webhooks/stripe
 ## Project Structure
 
 ```
-shipfast/
+my-app/
 ├── app/
 │   ├── (auth)/login/          # Google + magic link login
 │   ├── (auth)/verify/         # Magic link callback
