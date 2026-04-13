@@ -1,23 +1,34 @@
 ---
-title: "Hello, World"
-description: "The first post on the ShipFast blog. A quick look at what this boilerplate does."
-date: "2026-04-03"
-author: "ShipFast"
-image: "/og-default.png"
+title: "Welcome to Your Blog"
+description: "This is an example blog post. Replace it with your own content."
+date: "2025-01-01"
+author: "Your Name"
 ---
 
-# Hello, World
+# Welcome to Your Blog
 
-This is the first blog post rendered by ShipFast using **next-mdx-remote** in RSC mode.
+This is a sample post to demonstrate the MDX blog. You can write content using standard Markdown syntax with JSX support.
 
-## What is ShipFast?
+## Adding New Posts
 
-ShipFast is a personal SaaS boilerplate that eliminates the first 20–40 hours of every new web project:
+Create a new `.mdx` file in `content/blog/` with the following frontmatter:
 
-- **Auth** — Google OAuth + Magic Link via Auth.js v5
-- **Payments** — Stripe checkout, webhooks, and subscription management
-- **Email** — React Email templates sent via Resend
-- **Blog** — MDX-powered with automatic SEO and JSON-LD
-- **Database** — Prisma 7 + Supabase Postgres
+```yaml
+title: "Your Post Title"
+description: "A short description for SEO."
+date: "2025-01-15"
+author: "Your Name"
+image: "/optional-og-image.png"
+```
 
-Clone it, configure `config.ts`, and start shipping features.
+Posts appear automatically at `/blog/[slug]` with OG tags, JSON-LD structured data, and a sitemap entry.
+
+## Markdown Features
+
+You can use **bold**, *italic*, `inline code`, and more:
+
+- Unordered lists
+- [Links](https://example.com)
+- Images via standard Markdown syntax
+
+Delete this post and start writing your own.
