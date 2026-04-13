@@ -6,9 +6,9 @@ This version has breaking changes — APIs, conventions, and file structure may 
 
 ---
 
-# ShipFast — Agent Context
+# SaaS Starter — Agent Context
 
-Personal Next.js SaaS boilerplate. Not a commercial product.
+Next.js SaaS starter template.
 
 ## Stack (exact versions)
 

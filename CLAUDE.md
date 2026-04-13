@@ -1,8 +1,8 @@
 @AGENTS.md
 
-# ShipFast — Project Guide
+# SaaS Starter — Project Guide
 
-Personal Next.js SaaS boilerplate. Not a commercial product. Goal: clone → working local dev in under 5 minutes.
+Next.js SaaS starter template. Clone → configure → ship.
 
 ---
 
