@@ -53,7 +53,7 @@ const h1 = { fontSize: "24px", fontWeight: "bold", color: "#1a1a1a" };
 const text = { fontSize: "16px", color: "#374151", lineHeight: "1.5" };
 const button = {
   display: "inline-block",
-  backgroundColor: "#6366f1",
+  backgroundColor: config.colors.primary,
   color: "#ffffff",
   padding: "12px 24px",
   borderRadius: "6px",
